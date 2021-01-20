@@ -1,0 +1,11 @@
+/routes/posts.js
+
+// show
+router.get('/:id', function(req, res){
+  Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}})
+    .populate('author')
+    .exec(function(err, post){
+      if(err) return res.json(err);
+      res.render('posts/show', {post:post});
+    });
+});
