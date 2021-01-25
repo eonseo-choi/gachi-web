@@ -25,13 +25,13 @@ util.isLoggedin = function(req, res, next){
     next();
   }
   else {
-    req.flash('errors', {login:'Please login first'});
+    req.flash('errors', {login:'로그인 후 이용해주세요.'});
     res.redirect('/login');
   }
 }
 
 util.noPermission = function(req, res){
-  req.flash('errors', {login:"You don't have permission"});
+  req.flash('errors', {login:"권한이 없습니다."});
   req.logout();
   res.redirect('/login');
 }

@@ -8,7 +8,6 @@ var passport = require('./config/passport');
 var util = require('./util');
 var app = express();
 
-
 // DB setting
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -26,12 +25,14 @@ db.on('error', function(err){
 
 // Other settings
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname+'/public'));
+//app.use(express.static(__dirname+'/public'));
+app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 app.use(flash());
 app.use(session({secret:'MySecret', resave:true, saveUninitialized:true}));
+
 
 // Passport
 app.use(passport.initialize());

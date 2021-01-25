@@ -1,6 +1,35 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
+var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
+var authToken = '11057e06b3c5ec710e1563664a2fb0df';
+
+var client = require('twilio')(accountSid, authToken);
+
+var ran
+
+function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
+  var min = 11111
+  var max = 99999
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function sendMessage() { 
+    // alert("sms pushed")
+    ran = getRandomInt()
+    parseInt(ran)
+    client.messages
+    .create({
+     body: 'SMS 인증번호 : '+ ran,
+     from: '+15203415545',
+     to: '+8201054587465'
+     })
+   .then(message => console.log(message.sid));
+  return ran;
+}
+
+//sendMessage()
+
 // schema
 var userSchema = mongoose.Schema({
   username:{
@@ -48,6 +77,11 @@ userSchema.virtual('newPassword')
   .get(function(){ return this._newPassword; })
   .set(function(value){ this._newPassword=value; });
 
+  userSchema.virtual('smsValidation')
+  .get(function(){ return this._smsValidation; })
+  .set(function(value){ this._smsValidation=value; });
+
+
 // password validation
 var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/;
 var passwordRegexErrorMessage = '비밀번호는 최소 4자 이상의 영문과 숫자의 조합으로 만들어야합니다.';
@@ -56,6 +90,11 @@ userSchema.path('password').validate(function(v) {
 
   // create user
   if(user.isNew){
+    
+    if(user.smsValidation!==ran){
+      user.invalidate('sms', '인증번호가 맞지 않습니다.'+ran)
+    }
+      
     if(!user.passwordConfirmation){
       user.invalidate('passwordConfirmation', '비밀번호 확인이 필요합니다.');
     }

@@ -5,6 +5,7 @@ var util = require('../util');
 
 // New
 router.get('/new', function(req, res){
+  
   var user = req.flash('user')[0] || {};
   var errors = req.flash('errors')[0] || {};
   res.render('users/new', { user:user, errors:errors });
