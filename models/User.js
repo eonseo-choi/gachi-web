@@ -6,7 +6,7 @@ var authToken = '11057e06b3c5ec710e1563664a2fb0df';
 
 var client = require('twilio')(accountSid, authToken);
 
-var ran
+
 
 function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   var min = 11111
@@ -14,10 +14,9 @@ function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+ran = String(getRandomInt())
+
 function sendMessage() { 
-    // alert("sms pushed")
-    ran = getRandomInt()
-    parseInt(ran)
     client.messages
     .create({
      body: 'SMS 인증번호 : '+ ran,
@@ -77,7 +76,7 @@ userSchema.virtual('newPassword')
   .get(function(){ return this._newPassword; })
   .set(function(value){ this._newPassword=value; });
 
-  userSchema.virtual('smsValidation')
+userSchema.virtual('smsValidation')
   .get(function(){ return this._smsValidation; })
   .set(function(value){ this._smsValidation=value; });
 
@@ -91,12 +90,12 @@ userSchema.path('password').validate(function(v) {
   // create user
   if(user.isNew){
     
-    if(user.smsValidation!==ran){
-      user.invalidate('sms', '인증번호가 맞지 않습니다.'+ran)
+    if(user.smsValidation !== ran){
+      user.invalidate('sms', '인증번호가 맞지 않습니다.'+ ran)
     }
       
     if(!user.passwordConfirmation){
-      user.invalidate('passwordConfirmation', '비밀번호 확인이 필요합니다.');
+      user.invalidate('passwordConfirmation', '비밀번호 확인를 한번 더 입력하세요.');
     }
 
     if(!passwordRegex.test(user.password)){
