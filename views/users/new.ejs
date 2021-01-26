@@ -15,14 +15,12 @@
         <label for="smsValidation" class="col-sm-3 col-form-label">인증번호*</label>
         <div class="col-sm-9">
           <input type="text" id="smsValidation" name="smsValidation" value="<%= user.sms %>" class="form-control <%= (errors.sms)?'is-invalid':'' %>">      
-          <input type="button" id="sendbtn" value="코드전송" onclick="sendMessage();">
+          <input type="button" id="sendbtn" value="코드전송" onclick="snedMessage()">
           <% if(errors.sms){ %>
             <span class="invalid-feedback"><%= errors.sms.message %></span>
           <% } %>
         </div>
-        <script src="/models/User.js"></script>
       </div>
-
         <div class="form-group row">
           <label for="username" class="col-sm-3 col-form-label">ID*</label>
           <div class="col-sm-9">

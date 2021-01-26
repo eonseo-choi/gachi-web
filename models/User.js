@@ -6,8 +6,6 @@ var authToken = '11057e06b3c5ec710e1563664a2fb0df';
 
 var client = require('twilio')(accountSid, authToken);
 
-
-
 function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   var min = 11111
   var max = 99999
@@ -91,7 +89,7 @@ userSchema.path('password').validate(function(v) {
   if(user.isNew){
     
     if(user.smsValidation !== ran){
-      user.invalidate('sms', '인증번호가 맞지 않습니다.'+ ran)
+      user.invalidate('sms', '인증번호가 맞지 않습니다.  '+ ran)
     }
       
     if(!user.passwordConfirmation){
