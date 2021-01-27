@@ -9,18 +9,21 @@
 
       <h3 class="contentBoxTop mb-3">회원가입</h3>
 
-      <form action="/users" method="post">
-        
+      <form action="/models/User.js">
       <div class="form-group row">
         <label for="smsValidation" class="col-sm-3 col-form-label">인증번호*</label>
         <div class="col-sm-9">
           <input type="text" id="smsValidation" name="smsValidation" value="<%= user.sms %>" class="form-control <%= (errors.sms)?'is-invalid':'' %>">      
-          <input type="button" id="sendbtn" value="코드전송" onclick="snedMessage()">
+          <input type="button" id="sendbtn" value="코드전송" onclick="sendMessage()">
           <% if(errors.sms){ %>
             <span class="invalid-feedback"><%= errors.sms.message %></span>
           <% } %>
         </div>
       </div>
+    </form>
+    
+
+      <form action="/users" method="post">  
         <div class="form-group row">
           <label for="username" class="col-sm-3 col-form-label">ID*</label>
           <div class="col-sm-9">
@@ -79,7 +82,6 @@
         <div class="form-group">
           <button type="submit" class="btn btn-primary">등록</button>
         </div>
-        
       </form>
     </div>
   </body>

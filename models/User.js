@@ -12,18 +12,18 @@ function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-ran = String(getRandomInt())
+ran = String(getRandomInt());
 
-function sendMessage() { 
+(function sendMessage() { 
     client.messages
     .create({
      body: 'SMS 인증번호 : '+ ran,
      from: '+15203415545',
-     to: '+8201054587465'
+     to: '+821054587465'
      })
    .then(message => console.log(message.sid));
   return ran;
-}
+}());
 
 //sendMessage()
 
