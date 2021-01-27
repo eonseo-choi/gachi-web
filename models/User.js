@@ -12,10 +12,9 @@ function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-ran = String(getRandomInt());
+ran = String(getRandomInt())
 
-//즉시 실행함수로 호출해야 ejs 단에서 함수호출 가능 
-(function sendMessage() { 
+function sendMessage() { 
     client.messages
     .create({
      body: 'SMS 인증번호 : '+ ran,
@@ -24,7 +23,7 @@ ran = String(getRandomInt());
      })
    .then(message => console.log(message.sid));
   return ran;
-})();
+}
 
 //sendMessage()
 
