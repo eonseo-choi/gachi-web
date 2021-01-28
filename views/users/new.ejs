@@ -8,22 +8,21 @@
     <div class="container mb-3">
 
       <h3 class="contentBoxTop mb-3">회원가입</h3>
-
-      <form action="/models/User.js">
       <div class="form-group row">
-        <label for="smsValidation" class="col-sm-3 col-form-label">인증번호*</label>
+        <label for="sms" class="col-sm-3 col-form-label">인증번호*</label>
         <div class="col-sm-9">
-          <input type="text" id="smsValidation" name="smsValidation" value="<%= user.sms %>" class="form-control <%= (errors.sms)?'is-invalid':'' %>">      
+          <input type="text" id="sms" name="sms" value="<%=user.sms %>" class="form-control <%= (errors.sms)?'is-invalid':'' %>">      
           <input type="button" id="sendbtn" value="코드전송" onclick="sendMessage()">
           <% if(errors.sms){ %>
             <span class="invalid-feedback"><%= errors.sms.message %></span>
           <% } %>
         </div>
       </div>
-    </form>
-    
 
-      <form action="/users" method="post">  
+     
+    <form action="/users" method="post">  
+      
+     
         <div class="form-group row">
           <label for="username" class="col-sm-3 col-form-label">ID*</label>
           <div class="col-sm-9">
