@@ -89,7 +89,7 @@ userSchema.path('password').validate(function(v) {
   // create user
   if(user.isNew){
     
-    if(user.smsValidation !== ran){
+    if(user.smsValidation !== ran || !user.smsValidation){
       user.invalidate('sms', '인증번호가 맞지 않습니다.'+ ran)
     }
       
