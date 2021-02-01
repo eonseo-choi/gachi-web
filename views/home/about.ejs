@@ -1,17 +1,90 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <%- include('../partials/head') %>
-  </head>
-  <body>
-    <%- include('../partials/nav') %>
+
+<head>
+  <%- include('../partials/head') %>
+</head>
+
+<body>
+  <%- include('../partials/nav') %>
+
+    <div class="container mb-5">
+      <h2 class="mb-3">회사소개</h2>
+      <P><strong>(주)GachiSoft</strong>는2012년 1월에
+        <strong><abbr title="한국전자통신연구원">ETRI</addr></strong>의 우정물류기술연구부에서 우편, 물류 기술을 연구하던 연구원들이 독립하여,
+        <strong>"함께 세상에 가치있는 일을 하자"</strong>는 취지로 설립되었습니다. 기존에 연구하던 영상처리 기술을 기반으로 우정사업본부와
+        <strong>영상처리를 통한 우편물 자동화 구분</strong> 분야로 사업을 시작하여, 현재
+        <strong>김호연 대표</strong>와 약 20명 사원들이 함께 꿈을 향하여 열정을 불태우고 있습니다.
+      </p>
+    </div>
 
     <div class="container mb-3">
+      <h2 class="mb-3">회사오시는길</h2>
 
-      <h2 class="mb-3">About</h2>
 
-      <P>가치소프트 웹사이트 <a href="http://www.gachisoft.com">http://www.gachisoft.com</a>으로 연결</p>
+      검색 : <input id="getaddress" name="getaddress" type="text" value="">
+      <button onclick="getInputAd()">전송</button>
 
+      <!-- 지도가 들어갈 틀 -->
+      <div id="map" style="width:500px;height:400px;"></div>
+
+      <script>
+
+        var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
+        mapOption = {
+          center: new kakao.maps.LatLng(36.393134, 127.355838), // 지도의 중심좌표
+          level: 3 // 지도의 확대 레벨
+        };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        var markerPosition  = new kakao.maps.LatLng(36.393134, 127.355838); 
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+        position: markerPosition
+        });
+        
+        marker.setMap(map);
+
+        function getInputAd() {
+
+          marker.setMap(null);
+          var getAddress = document.getElementById('getaddress').value;
+          
+          var geocoder = new kakao.maps.services.Geocoder();
+          geocoder.addressSearch(getAddress, function (result, status) {
+
+            // 정상적으로 검색이 완료됐으면 
+            if (status === kakao.maps.services.Status.OK) {
+
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+              // 결과값으로 받은 위치를 마커로 표시합니다
+              var marker = new kakao.maps.Marker({
+                map: map,
+                position: coords
+              });
+
+              // var infowindow = new kakao.maps.InfoWindow({
+              //   content: '<div style="width:150px;text-align:center;padding:6px 0;">test</div>'
+              // });
+              // infowindow.open(map, marker); 
+              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+              map.setCenter(coords);
+            } else {
+              alert("fail");
+            }
+           
+          });
+        }
+
+      </script>
+
+      <div class="container" background_color="green">
+        <h4>대전광역시 유성구 유성대로 1184번길 48</h4>
+      </div>
     </div>
-  </body>
+</body>
+
 </html>
