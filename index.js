@@ -52,6 +52,7 @@ app.use('/posts', util.getPostQueryString, require('./routes/posts'));
 app.use('/users', require('./routes/users'));
 app.use('/files', require('./routes/files')); // 1
 
+
 // Port setting
 var port = 8000;
 app.listen(port, function () {

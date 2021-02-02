@@ -14,13 +14,13 @@
       <form action="/users" method="post">
 
         <div class="form-group row">
-          <label for="username" class="col-sm-3 col-form-label">핸드폰 번호*</label>
+          <label for="cell" class="col-sm-3 col-form-label">핸드폰 번호*</label>
           <div class="col-sm-9">
-            <input type="text" id="username" name="username" value="<%= user.username %>"
-              class="form-control <%= (errors.username)?'is-invalid':'' %>">
-            <% if(errors.username){ %>
+            <input type="text" id="cellnum" name="cellnum" value="<%= user.cellnum %>"
+              class="form-control <%= (errors.cell)?'is-invalid':'' %>">
+            <% if(errors.cellnum){ %>
               <span class="invalid-feedback">
-                <%= errors.username.message %>
+                <%= errors.cellnum.message %>
               </span>
               <% } %>
           </div>
@@ -28,41 +28,28 @@
 
         <div class="form-group">
               
-          <input type="button" onclick="test()" value="인증코드전송" class="btn btn-primary">
+          <input type="button" onclick="popAuth()" value="인증코드전송" class="btn btn-primary">
           <script>
-            function test(){
+            
+
+
+            function authPop(){
             window.open("/users/valAuth","popup1","width=600, height=350");
             }
+
+            function popAuth(){
+              if(document.getElementById("cellnum").value==""){
+                alert("핸드폰 번호를 입력하세요.");
+              }else if(document.getElementById("cellnum").value!=""){
+                authPop();
+              }
+            }
+            
             </script>
         </div>
 
         <p style="font-size: 13px;">( 문자 인증 후 회원가입이 가능합니다. )</p>
-          
-
-<!-- 
-        <div class="form-group row">
-        <label for="smsValidation" class="col-sm-3 col-form-label">인증번호*</label>
-        <div class="col-sm-9">
-          <input type="text" id="smsValidation" name="smsValidation" value="<%=user.sms %>"
-            class="form-control <%= (errors.sms)?'is-invalid':'' %>">
-          <% if(errors.sms){ %>
-            <span class="invalid-feedback">
-              <%= errors.sms.message %>
-            </span>
-            <% } %>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <a class="btn btn-primary" href="../">뒤로가기</a>
-      </div> -->
-
-
-        <!-- <% if(errors.unhandled){ %>
-          <div class="alert alert-danger">
-            <%= errors.unhandled %>
-          </div>
-          <% } %> -->                
+                  
       </form>
     </div>
 </body>

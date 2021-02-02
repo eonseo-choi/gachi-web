@@ -3,7 +3,9 @@
 
 <head>
   <%- include('../partials/authhead') %>
+
 </head>
+
 <body>
   <%- include('../partials/authnav') %>
     <div class="container mb-3">
@@ -13,9 +15,9 @@
       <form action="/users" method="post">
 
         <div class="form-group row">
-          <label for="username" class="col-sm-3 col-form-label">5 digit*</label>
+          <label for="auth" class="col-sm-3 col-form-label">5 digit*</label>
           <div class="col-sm-9">
-            <input type="text" id="username" name="username" value="<%= user.username %>"
+            <input type="text" id="5digit" name="5digit" value=""
               class="form-control <%= (errors.username)?'is-invalid':'' %>">
             <% if(errors.username){ %>
               <span class="invalid-feedback">
@@ -26,33 +28,38 @@
         </div>
 
         <div class="form-group">
-              
-          <input type="button" onclick="test()" value="확인" class="btn btn-primary">
+
+          <input type="button" onclick="authChecker()" value="확인" class="btn btn-primary">
           <script>
-            function test(){
-            alert("test");
-            var isAuth = true;
-            if(isAuth==true){
-            window.opener.location.href="/users/new";
-            window.close();
-            }
-            else {
-            window.opener.location.href="/users/auth";
-                }
-            }
-            
-            </script>
-              
-              <input type="button" onclick="test1()" value="취소" class="btn btn-primary">
-              <script>
-                function test1(){
+            function authChecker() {
+              var cellParent;
+              //입력번호 전달 됨
+              cellParent = opener.document.getElementById("cellnum").value;
+              //document.getElementById("5digit").value = opener.document.getElementById("cellnum").value;
+              alert("auth result = " + cellParent);
+              var isAuth = true;
+
+              if (isAuth == true) {
+                window.opener.location.href = "/users/new";
                 window.close();
-                }
-                </script>
-          
+              }
+              else {
+                window.opener.location.href = "/users/auth";
+              }
+            }
+
+          </script>
+
+          <input type="button" onclick="test1()" value="취소" class="btn btn-primary">
+          <script>
+            function test1() {
+              window.close();
+            }
+          </script>
+
         </div>
 
-<!-- 
+        <!-- 
         <div class="form-group row">
         <label for="smsValidation" class="col-sm-3 col-form-label">인증번호*</label>
         <div class="col-sm-9">
@@ -75,7 +82,7 @@
           <div class="alert alert-danger">
             <%= errors.unhandled %>
           </div>
-          <% } %> -->                
+          <% } %> -->
       </form>
     </div>
 </body>

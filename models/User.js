@@ -3,10 +3,10 @@ var bcrypt = require('bcryptjs');
 var assert = require('assert');
 
 
-var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
-var authToken = '11057e06b3c5ec710e1563664a2fb0df';
+// var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
+// var authToken = '11057e06b3c5ec710e1563664a2fb0df';
 
-var client = require('twilio')(accountSid, authToken);
+// var client = require('twilio')(accountSid, authToken);
 
 ran = String(getRandomInt());
 
