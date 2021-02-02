@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+    <div class="container mb-3">
+      
+      
+      <h3 class="contentBoxTop mb-3">본인 인증 </h3>
+      
+      <form action="/users" method="post">
+
+        <div class="form-group row">
+          <label for="username" class="col-sm-3 col-form-label">핸드폰 번호*</label>
+          <div class="col-sm-9">
+            <input type="text" id="username" name="username" value="<%= user.username %>"
+              class="form-control <%= (errors.username)?'is-invalid':'' %>">
+            <% if(errors.username){ %>
+              <span class="invalid-feedback">
+                <%= errors.username.message %>
+              </span>
+              <% } %>
+          </div>
+        </div>
+
+        <div class="form-group">
+              
+          <input type="button" onclick="test()" value="인증코드전송" class="btn btn-primary">
+          <script>
+            function test(){
+            window.open("/users/valAuth","popup1","width=600, height=350");
+            }
+            </script>
+        </div>
+
+        <p style="font-size: 13px;">( 문자 인증 후 회원가입이 가능합니다. )</p>
+          
+
+<!-- 
+        <div class="form-group row">
+        <label for="smsValidation" class="col-sm-3 col-form-label">인증번호*</label>
+        <div class="col-sm-9">
+          <input type="text" id="smsValidation" name="smsValidation" value="<%=user.sms %>"
+            class="form-control <%= (errors.sms)?'is-invalid':'' %>">
+          <% if(errors.sms){ %>
+            <span class="invalid-feedback">
+              <%= errors.sms.message %>
+            </span>
+            <% } %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <a class="btn btn-primary" href="../">뒤로가기</a>
+      </div> -->
+
+
+        <!-- <% if(errors.unhandled){ %>
+          <div class="alert alert-danger">
+            <%= errors.unhandled %>
+          </div>
+          <% } %> -->                
+      </form>
+    </div>
+</body>
+
+</html>

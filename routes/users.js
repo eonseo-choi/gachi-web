@@ -3,6 +3,23 @@ var router = express.Router();
 var User = require('../models/User');
 var util = require('../util');
 
+//Auth
+router.get('/auth',function(req, res){
+
+  var user = req.flash('user')[0] || {};
+  var errors = req.flash('errors')[0] || {};
+  res.render('users/auth', { user:user, errors:errors });
+});
+
+
+//valAuth
+router.get('/valAuth',function(req, res){
+
+  var user = req.flash('user')[0] || {};
+  var errors = req.flash('errors')[0] || {};
+  res.render('users/valAuth', { user:user, errors:errors });
+});
+
 // New
 router.get('/new', function(req, res){
   

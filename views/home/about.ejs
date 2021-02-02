@@ -48,7 +48,7 @@
         marker.setMap(map);
 
         function getInputAd() {
-
+         
           marker.setMap(null);
           var getAddress = document.getElementById('getaddress').value;
           
@@ -73,7 +73,7 @@
               // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
               map.setCenter(coords);
             } else {
-              alert("fail");
+              alert("정확한 주소를 입력해주세요.");
             }
            
           });
