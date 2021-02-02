@@ -8,13 +8,13 @@ var assert = require('assert');
 
 // var client = require('twilio')(accountSid, authToken);
 
-ran = String(getRandomInt());
+// ran = String(getRandomInt());
 
-function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
-  var min = 11111
-  var max = 99999
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+// function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
+//   var min = 11111
+//   var max = 99999
+//   return Math.floor(Math.random() * (max - min)) + min;
+// }
 
 // sendMessage();
 // function sendMessage() {
@@ -28,12 +28,12 @@ function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
 //   return ran;
 // }
 
-global.onload = function(){
-  var hw = document.getElementById('sendbtn');
-  hw.addEventListener('click',function(){
-    alert("hello world");
-  })
-}
+// global.onload = function(){
+//   var hw = document.getElementById('sendbtn');
+//   hw.addEventListener('click',function(){
+//     alert("hello world");
+//   })
+// }
 
 // schema
 var userSchema = mongoose.Schema({

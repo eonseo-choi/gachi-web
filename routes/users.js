@@ -3,32 +3,33 @@ var router = express.Router();
 var User = require('../models/User');
 var util = require('../util');
 
-// var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
-// var authToken = '11057e06b3c5ec710e1563664a2fb0df';
 
-// var client = require('twilio')(accountSid, authToken);
-// var cell ; 
+var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
+var authToken = '11057e06b3c5ec710e1563664a2fb0df';
 
-// ran = String(getRandomInt());
+var client = require('twilio')(accountSid, authToken);
+//var cell ; 
 
-// function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
-//   var min = 11111
-//   var max = 99999
-//   return Math.floor(Math.random() * (max - min)) + min;
-// }
+ran = String(getRandomInt());
+
+function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
+  var min = 11111
+  var max = 99999
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 
-// function sendMessage() {
-//   client.messages
-//     .create({
-//       body: 'SMS 인증번호 : ' + ran,
-//       from: '+15203415545',
-//       // to: '+821054587465'
-//       to : cell
-//     })
-//     .then(message => console.log(message.sid));
-//   return ran;
-// };
+function sendMessage() {
+  client.messages
+    .create({
+      body: 'SMS 인증번호 : ' + ran,
+      from: '+15203415545',
+      to: '+821054587465'
+      
+    })
+    .then(message => console.log(message.sid));
+  return ran;
+}
 
 
 //Auth
@@ -36,6 +37,7 @@ router.get('/auth',function(req, res){
 
   var user = req.flash('user')[0] || {};
   var errors = req.flash('errors')[0] || {};
+  
 
   res.render('users/auth', { user:user, errors:errors });
 });
@@ -46,6 +48,11 @@ router.get('/valAuth',function(req, res){
 
   var user = req.flash('user')[0] || {};
   var errors = req.flash('errors')[0] || {};
+
+  //sendMessage();
+  var test = req.body.cellnum;
+  console.log(test);
+  
 
   res.render('users/valAuth', { user:user, errors:errors });
 });
