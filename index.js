@@ -7,6 +7,11 @@ var session = require('express-session');
 var passport = require('./config/passport');
 var util = require('./util');
 var app = express();
+var cellTester = require('./routes/users');
+
+// const fastcsv = require("fast-csv");
+// const fs = require("fs");
+// const ws = fs.createWriteStream("bezkoder_mongodb_fastcsv.csv");
 
 // DB setting
 mongoose.set('useNewUrlParser', true);
@@ -14,7 +19,9 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 let url = "mongodb://localhost:27017/dalhav";
+//let url = "mongodb://localhost:27017/";
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+
 var db = mongoose.connection;
 db.once('open', function () {
   console.log('DB connected');
@@ -23,10 +30,11 @@ db.on('error', function (err) {
   console.log('DB ERROR : ', err);
 });
 
+
 // Other settings
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname+'/public'));
-// app.use(express.static(__dirname));
+//app.use(express.static(__dirname+'/public'));
+app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
@@ -51,6 +59,7 @@ app.use('/', require('./routes/home'));
 app.use('/posts', util.getPostQueryString, require('./routes/posts'));
 app.use('/users', require('./routes/users'));
 app.use('/files', require('./routes/files')); // 1
+app.use('/users', cellTester);
 
 
 // Port setting

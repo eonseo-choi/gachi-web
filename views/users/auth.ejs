@@ -14,9 +14,9 @@
       <form action="/users" method="post">
 
         <div class="form-group row">
-          <label for="cell" class="col-sm-3 col-form-label">핸드폰 번호*</label>
+          <label for="cellnum" class="col-sm-3 col-form-label">핸드폰 번호*</label>
           <div class="col-sm-9">
-            <input type="text" id="cellnum" name="cellnum" value="<%= user.cellnum %>"
+            <input type="text" id="cellnum" name="cellnum" value=""
               class="form-control <%= (errors.cell)?'is-invalid':'' %>">
             <% if(errors.cellnum){ %>
               <span class="invalid-feedback">
@@ -25,10 +25,11 @@
               <% } %>
           </div>
         </div>
+      </form>
 
         <div class="form-group">
               
-          <input type="button" onclick="popAuth()" value="인증코드전송" class="btn btn-primary">
+          <input type="submit" id="sndAuth" onclick="popAuth()" value="인증코드전송" class="btn btn-primary">
           <script>
 
             function authPop(){
@@ -39,8 +40,8 @@
               if(document.getElementById("cellnum").value==""){
                 alert("핸드폰 번호를 입력하세요.");
               }else if(document.getElementById("cellnum").value!=""){
-                
                 authPop();
+                sendMessage();
               }
             }
             
@@ -49,8 +50,9 @@
 
         <p style="font-size: 13px;">( 문자 인증 후 회원가입이 가능합니다. )</p>
                   
-      </form>
-    </div>
+     
+      </div>
+      <script src="/routes/users.js"></script> 
 </body>
 
 </html>

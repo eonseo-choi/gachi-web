@@ -31,15 +31,13 @@
 
           <input type="button" onclick="authChecker()" value="확인" class="btn btn-primary">
           <script>
-            import test from '/users/User'
-
+          
             function authChecker() {
               var cellParent;
-              sendMessage();
               //입력번호 전달 됨
               cellParent = opener.document.getElementById("cellnum").value;
               //document.getElementById("5digit").value = opener.document.getElementById("cellnum").value;
-              alert("auth result = " + cellParent);
+              alert("auth result = "+cellParent );
               var isAuth = true;
 
               if (isAuth == true) {
