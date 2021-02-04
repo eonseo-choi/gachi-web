@@ -1,21 +1,57 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var router = express.Router();
 var User = require('../models/User');
 var util = require('../util');
+var fastcsv = require('fast-csv');
+var mongodb = require('mongodb').MongoClient
+var fs = require('fs');
+var ws = fs.createWriteStream('filetest.csv', { encoding: 'utf-16le' });
+var request = require('request');
 
 var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
 var authToken = '11057e06b3c5ec710e1563664a2fb0df';
 
 var client = require('twilio')(accountSid, authToken);
 //var cell ; 
-
 var ran;
 
+let url = "mongodb://localhost:27017/";
+////////////////////////////////////////////
 
+////////////////////////////////////////////
 function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   var min = 11111
   var max = 99999
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function expCSV() {
+  mongodb.connect(
+    url,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    (err, client) => {
+      if (err) throw err;
+
+      client
+        .db("dalhav")
+        .collection("files")
+        .find({})
+        .toArray((err, data) => {
+          if (err) throw err;
+
+          console.log(data);
+          fastcsv
+            .write(data, { headers: true })
+            .on("finish", function () {
+              console.log("Write to bezkoder_mongodb_fastcsv.csv successfully!");
+            })
+            .pipe(ws);
+
+          client.close();
+        });
+    }
+  );
 }
 
 //Auth
@@ -23,11 +59,10 @@ router.get('/auth', function (req, res) {
 
   var user = req.flash('user')[0] || {};
   var errors = req.flash('errors')[0] || {};
-  
-  
+
+  console.log(temp);
   //console.log("email :", req.param('cellnum')); 
-  res.render('users/auth', { user: user, errors: errors});
- 
+  res.render('users/auth', { user: user, errors: errors });
 });
 
 //valAuth
@@ -35,9 +70,9 @@ router.get('/valAuth', function (req, res) {
 
   var user = req.flash('user')[0] || {};
   var errors = req.flash('errors')[0] || {};
-  var str = req.body;
+  //var str = req.body;
 
-  console.log(str);
+  //console.log(num);
 
   // 인증코드 전송 누를 시 각자 다른 번호가 전송됨
   ran = String(getRandomInt());
@@ -53,10 +88,10 @@ router.get('/valAuth', function (req, res) {
       .then(message => console.log(message.sid));
     return ran;
   }
-
- //sendMessage();
- // res.render('users/valAuth', { user: user, errors: errors,cellnum: req.flash.cellnum });
-  res.render('users/valAuth', { user: user, errors: errors,input:str });
+  //expCSV();
+  //sendMessage();
+  // res.render('users/valAuth', { user: user, errors: errors,cellnum: req.flash.cellnum });
+  res.render('users/valAuth', { user: user, errors: errors});
 
 });
 

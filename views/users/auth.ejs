@@ -4,13 +4,13 @@
 <head>
   <%- include('../partials/head') %>
 </head>
+
 <body>
   <%- include('../partials/nav') %>
     <div class="container mb-3">
-      
-      
+
       <h3 class="contentBoxTop mb-3">본인 인증 </h3>
-      
+
       <form action="/users" method="post">
 
         <div class="form-group row">
@@ -27,32 +27,28 @@
         </div>
       </form>
 
-        <div class="form-group">
-              
-          <input type="submit" id="sndAuth" onclick="popAuth()" value="인증코드전송" class="btn btn-primary">
-          <script>
+      <div class="form-group">
 
-            function authPop(){
-            window.open("/users/valAuth","popup1","width=600, height=350");
+        <input type="submit" id="sndAuth" onclick="popAuth()" value="인증코드전송" class="btn btn-primary">
+        <script>
+
+          function authPop() {
+            window.open("/users/valAuth", "popup1", "width=600, height=350");
+          }
+
+          function popAuth() {
+            if (document.getElementById("cellnum").value == "") {
+              alert("핸드폰 번호를 입력하세요.");
+            } else if (document.getElementById("cellnum").value != "") {
+              authPop();
             }
+          }
 
-            function popAuth(){
-              if(document.getElementById("cellnum").value==""){
-                alert("핸드폰 번호를 입력하세요.");
-              }else if(document.getElementById("cellnum").value!=""){
-                authPop();
-                //sendMessage();
-              }
-            }
-            
-            </script>
-        </div>
-
-        <p style="font-size: 13px;">( 문자 인증 후 회원가입이 가능합니다. )</p>
-                  
-     
+        </script>
       </div>
-      <script src="/routes/users.js"></script> 
+      <p style="font-size: 13px;">( 문자 인증 후 회원가입이 가능합니다. )</p>
+    </div>
+    <script src="/routes/users.js"></script>
 </body>
 
 </html>
