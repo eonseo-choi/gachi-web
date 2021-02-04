@@ -7,24 +7,25 @@ var fastcsv = require('fast-csv');
 var mongodb = require('mongodb').MongoClient
 var fs = require('fs');
 var ws = fs.createWriteStream('filetest.csv', { encoding: 'utf-16le' });
-var request = require('request');
 
 var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
 var authToken = '11057e06b3c5ec710e1563664a2fb0df';
-
 var client = require('twilio')(accountSid, authToken);
-//var cell ; 
 var ran;
-
 let url = "mongodb://localhost:27017/";
-////////////////////////////////////////////
 
+// ////////////////////////////////////////////
+// var tttt = (function($){ 
+//   ttttt = $('#cellnum').val();
+//  });
+// var test123 = global.document.getElementsByName('cellnum');
 ////////////////////////////////////////////
 function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   var min = 11111
   var max = 99999
   return Math.floor(Math.random() * (max - min)) + min;
 }
+
 
 function expCSV() {
   mongodb.connect(
@@ -60,7 +61,6 @@ router.get('/auth', function (req, res) {
   var user = req.flash('user')[0] || {};
   var errors = req.flash('errors')[0] || {};
 
-  console.log(temp);
   //console.log("email :", req.param('cellnum')); 
   res.render('users/auth', { user: user, errors: errors });
 });
@@ -70,9 +70,8 @@ router.get('/valAuth', function (req, res) {
 
   var user = req.flash('user')[0] || {};
   var errors = req.flash('errors')[0] || {};
-  //var str = req.body;
 
-  //console.log(num);
+  // console.log(ttt);
 
   // 인증코드 전송 누를 시 각자 다른 번호가 전송됨
   ran = String(getRandomInt());
@@ -88,33 +87,12 @@ router.get('/valAuth', function (req, res) {
       .then(message => console.log(message.sid));
     return ran;
   }
-  //expCSV();
+  // expCSV();
   //sendMessage();
   // res.render('users/valAuth', { user: user, errors: errors,cellnum: req.flash.cellnum });
-  res.render('users/valAuth', { user: user, errors: errors});
+  res.render('users/valAuth', { user: user, errors: errors });
 
 });
-
-// //valAuth
-// router.get('/valAuth', function (req, res) {
-//   var user = req.flash('user')[0] || {};
-//   var errors = req.flash('errors')[0] || {};
-//   res.render('users/valAuth', {
-//     user: user, errors: errors
-//   } );
-// } );
-
-// router.post('/valAuth', function (req, res) {
-
-//   //var user = req.flash('user')[0] || {};
-//   //var errors = req.flash('errors')[0] || {};
-//   console.log(req.body);
-//   var str = " cell is "+ req.body.cellnum;
-//   res.send(str);
-//   console.log(str);
-//   //res.render('users/valAuth', { user: user, errors: errors });
-// });
-
 
 // New
 router.get('/new', function (req, res) {
