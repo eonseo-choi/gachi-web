@@ -6,7 +6,7 @@ var util = require('../util');
 var fastcsv = require('fast-csv');
 var mongodb = require('mongodb').MongoClient
 var fs = require('fs');
-var ws = fs.createWriteStream('filetest.csv', { encoding: 'utf-16le' });
+var ws = fs.createWriteStream('userdbtest.hwp');
 
 var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
 var authToken = '11057e06b3c5ec710e1563664a2fb0df';
@@ -26,7 +26,7 @@ function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-
+  
 function expCSV() {
   mongodb.connect(
     url,
@@ -36,7 +36,7 @@ function expCSV() {
 
       client
         .db("dalhav")
-        .collection("files")
+        .collection("users")
         .find({})
         .toArray((err, data) => {
           if (err) throw err;
@@ -54,6 +54,7 @@ function expCSV() {
     }
   );
 }
+
 
 //Auth
 router.get('/auth', function (req, res) {
@@ -87,7 +88,7 @@ router.get('/valAuth', function (req, res) {
       .then(message => console.log(message.sid));
     return ran;
   }
-  // expCSV();
+  expCSV();
   //sendMessage();
   // res.render('users/valAuth', { user: user, errors: errors,cellnum: req.flash.cellnum });
   res.render('users/valAuth', { user: user, errors: errors });

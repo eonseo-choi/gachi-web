@@ -59,8 +59,6 @@ app.use('/', require('./routes/home'));
 app.use('/posts', util.getPostQueryString, require('./routes/posts'));
 app.use('/users', require('./routes/users'));
 app.use('/files', require('./routes/files')); // 1
-// app.use('/users', cellTester);
-
 
 // Port setting
 var port = 8000;

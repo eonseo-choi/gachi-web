@@ -96,12 +96,12 @@ userSchema.path('password').validate(function (v) {
   // create user
   if (user.isNew) {
 
-    if (user.smsValidation !== ran) {
-      if (user.smsValidation == '') {
-        user.invalidate('sms', '인증번호를 입력해주세요.' + ran)
-      } else
-        user.invalidate('sms', '인증번호가 맞지 않습니다.' + ran)
-    }
+    // if (user.smsValidation !== ran) {
+    //   if (user.smsValidation == '') {
+    //     user.invalidate('sms', '인증번호를 입력해주세요.' + ran)
+    //   } else
+    //     user.invalidate('sms', '인증번호가 맞지 않습니다.' + ran)
+    // }
 
     if (!user.passwordConfirmation) {
       user.invalidate('passwordConfirmation', '비밀번호 확인를 한번 더 입력하세요.');
