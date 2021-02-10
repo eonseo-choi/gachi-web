@@ -9,6 +9,8 @@ var util = require('./util');
 var app = express();
 // var cellTester = require('./routes/users');
 
+require('dotenv').config();
+
 // const fastcsv = require("fast-csv");
 // const fs = require("fs");
 // const ws = fs.createWriteStream("bezkoder_mongodb_fastcsv.csv");
@@ -18,9 +20,16 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
+
+var db_name = process.env.DB_URL
+
+// let url = "mongodb://localhost:27017/"+db_name;
+
 let url = "mongodb://localhost:27017/dalhav";
 //let url = "mongodb://localhost:27017/";
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+// let url = process.env.DB_URL;
+
+mongoose.connect(db_name, { useNewUrlParser: true, useUnifiedTopology: true });
 
 var db = mongoose.connection;
 db.once('open', function () {
@@ -57,11 +66,13 @@ app.use(function (req, res, next) {
 // Routes
 app.use('/', require('./routes/home'));
 app.use('/posts', util.getPostQueryString, require('./routes/posts'));
+app.use('/posts_qna', util.getPostQueryString, require('./routes/posts_qna'));
 app.use('/users', require('./routes/users'));
 app.use('/files', require('./routes/files')); // 1
 
 // Port setting
-var port = 8000;
+// var port = 8000;
+var port = process.env.SV_PORT;
 app.listen(port, function () {
-  console.log('server on! http://localhost:' + port);
+  console.log('server on! http://localhost:' + process.env.SV_PORT);
 });

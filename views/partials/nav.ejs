@@ -8,6 +8,7 @@
       <ul class="navbar-nav">
         <% if(isAuthenticated){ %>
           <li class="nav-item"><a href="/posts" class="nav-link">Board</a></li>
+          <li class="nav-item"><a href="/posts_qna" class="nav-link">QnA</a></li>
           <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
         <% } else { %>
           <li class="nav-item"><a href="javascript:void(0)" onclick="alert('로그인 후 이용해주십시오.')?this.parentElement.submit():null;" class="nav-link">Board</a></li>

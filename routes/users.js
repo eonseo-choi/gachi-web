@@ -7,9 +7,11 @@ var fastcsv = require('fast-csv');
 var mongodb = require('mongodb').MongoClient
 var fs = require('fs');
 var ws = fs.createWriteStream('userdbtest.hwp');
+require('dotenv').config();
 
-var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
-var authToken = '11057e06b3c5ec710e1563664a2fb0df';
+var accountSid = process.env.TWILIO_ACCOUNTSID;
+var authToken = process.env.TWILIO_AUTHTOKEN;
+
 var client = require('twilio')(accountSid, authToken);
 var ran;
 let url = "mongodb://localhost:27017/";
@@ -89,7 +91,7 @@ router.get('/valAuth', function (req, res) {
     return ran;
   }
   expCSV();
-  //sendMessage();
+  sendMessage();
   // res.render('users/valAuth', { user: user, errors: errors,cellnum: req.flash.cellnum });
   res.render('users/valAuth', { user: user, errors: errors });
 

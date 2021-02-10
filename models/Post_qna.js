@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 // schema
-var postSchema = mongoose.Schema({
+var postqnaSchema = mongoose.Schema({
   title:{type:String, required:[true,'Title is required!']},
   body:{type:String, required:[true,'Body is required!']},
   author:{type:mongoose.Schema.Types.ObjectId, ref:'user', required:true},
@@ -10,6 +10,9 @@ var postSchema = mongoose.Schema({
   updatedAt:{type:Date},
 });
 
+
+
 // model & export
-var Post = mongoose.model('post', postSchema);
-module.exports = Post;
+var Post_qna = mongoose.model('post_qna',postqnaSchema)
+module.exports = Post_qna;
+//module.exports = Post_qna;

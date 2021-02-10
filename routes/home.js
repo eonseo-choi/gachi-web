@@ -35,14 +35,6 @@ router.post('/login',
     var isValid = true;
     var isSmsValid = true;
 
-  //   client.messages
-  //   .create({
-  //    body: 'SMS 인증번호 : 1234 ',
-  //    from: '+15203415545',
-  //    to: '+821054587465'
-  //    })
-  //  .then(message => console.log(message.sid));
-
     if(!req.body.username){
       isValid = false;
       errors.username = 'ID를 입력해주세요.';
