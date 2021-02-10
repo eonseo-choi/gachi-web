@@ -10,7 +10,8 @@ $(function(){
 
   function getTime(dateObj){
     if(dateObj instanceof Date)
-      return get2digits(dateObj.getHours()) + ':' + get2digits(dateObj.getMinutes())+ ':' + get2digits(dateObj.getSeconds());
+      // return get2digits(dateObj.getHours()) + ':' + get2digits(dateObj.getMinutes())+ ':' + get2digits(dateObj.getSeconds());
+      return get2digits(dateObj.getHours()) + ':' + get2digits(dateObj.getMinutes());
   }
 
   function convertDate(){

@@ -63,6 +63,7 @@ app.use('/posts', util.getPostQueryString, require('./routes/posts'));
 app.use('/qna', util.getPostQueryString, require('./routes/postsqna'));
 app.use('/users', require('./routes/users'));
 app.use('/files', require('./routes/files')); // 1
+app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 
 // Port setting
 // var port = 8000;
