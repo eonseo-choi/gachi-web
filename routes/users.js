@@ -14,7 +14,8 @@ var authToken = process.env.TWILIO_AUTHTOKEN;
 
 var client = require('twilio')(accountSid, authToken);
 var ran;
-let url = "mongodb://localhost:27017/";
+// let url = "mongodb://localhost:27017/";
+let url = process.env.DB_URL;
 
 // ////////////////////////////////////////////
 // var tttt = (function($){ 
@@ -27,7 +28,6 @@ function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
   var max = 99999
   return Math.floor(Math.random() * (max - min)) + min;
 }
-
   
 function expCSV() {
   mongodb.connect(

@@ -2,39 +2,6 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var assert = require('assert');
 
-
-// var accountSid = 'AC4b35f652d89269c280ec201bdc72230c';
-// var authToken = '11057e06b3c5ec710e1563664a2fb0df';
-
-// var client = require('twilio')(accountSid, authToken);
-
-// ran = String(getRandomInt());
-
-// function getRandomInt() { //min ~ max 사이의 임의의 정수 반환
-//   var min = 11111
-//   var max = 99999
-//   return Math.floor(Math.random() * (max - min)) + min;
-// }
-
-// sendMessage();
-// function sendMessage() {
-//   client.messages
-//     .create({
-//       body: 'SMS 인증번호 : ' + ran,
-//       from: '+15203415545',
-//       to: '+821054587465'
-//     })
-//     .then(message => console.log(message.sid));
-//   return ran;
-// }
-
-// global.onload = function(){
-//   var hw = document.getElementById('sendbtn');
-//   hw.addEventListener('click',function(){
-//     alert("hello world");
-//   })
-// }
-
 // schema
 var userSchema = mongoose.Schema({
   username: {

@@ -22,12 +22,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
 var db_name = process.env.DB_URL
-
-// let url = "mongodb://localhost:27017/"+db_name;
-
 let url = "mongodb://localhost:27017/dalhav";
-//let url = "mongodb://localhost:27017/";
-// let url = process.env.DB_URL;
 
 mongoose.connect(db_name, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -38,7 +33,6 @@ db.once('open', function () {
 db.on('error', function (err) {
   console.log('DB ERROR : ', err);
 });
-
 
 // Other settings
 app.set('view engine', 'ejs');
@@ -66,7 +60,7 @@ app.use(function (req, res, next) {
 // Routes
 app.use('/', require('./routes/home'));
 app.use('/posts', util.getPostQueryString, require('./routes/posts'));
-app.use('/posts_qna', util.getPostQueryString, require('./routes/posts_qna'));
+app.use('/qna', util.getPostQueryString, require('./routes/postsqna'));
 app.use('/users', require('./routes/users'));
 app.use('/files', require('./routes/files')); // 1
 

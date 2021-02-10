@@ -2,7 +2,7 @@ var express  = require('express');
 var router = express.Router();
 var multer = require('multer'); // 1
 var upload = multer({ dest: 'uploadedFiles/' });
-var Post = require('../models/Post_qna');
+var Post = require('../models/Postqna');
 var User = require('../models/User');
 var File = require('../models/File'); // 3
 var util = require('../util');
@@ -30,7 +30,7 @@ router.get('/', async function(req, res){
       .exec();
   }
 
-  res.render('posts/index', {
+  res.render('qna/indexqna', {
     posts:posts,
     currentPage:page,
     maxPage:maxPage,
@@ -41,10 +41,11 @@ router.get('/', async function(req, res){
 });
 
 // New
-router.get('/new_qna', util.isLoggedin, function(req, res){
-  var post = req.flash('post')[0] || {};
+router.get('/newqna', util.isLoggedin, function(req, res){
+  var post = req.flash('postqna')[0] || {};
   var errors = req.flash('errors')[0] || {};
-  res.render('posts/new_qna', { post:post, errors:errors });
+  res.render('qna/newqna', { post:post, errors:errors });
+  
 });
 
 // create
@@ -56,13 +57,13 @@ router.post('/', util.isLoggedin, upload.single('attachment'), async function(re
     if(err){
       req.flash('post', req.body);
       req.flash('errors', util.parseError(err));
-      return res.redirect('/posts/new'+res.locals.getPostQueryString());
+      return res.redirect('/qna/newqna'+res.locals.getPostQueryString());
     }
     if(attachment){                 // 4-4
       attachment.postId = post._id; // 4-4
       attachment.save();            // 4-4
     }      
-    res.redirect('/posts'+res.locals.getPostQueryString(false, { page:1, searchText:'' }));
+    res.redirect('/qna'+res.locals.getPostQueryString(false, { page:1, searchText:'' }));
   });
 });
 
@@ -72,7 +73,7 @@ router.get('/:id', function(req, res){
     .populate('author')
     .exec(function(err, post){
       if(err) return res.json(err);
-      res.render('posts/show', {post:post});
+      res.render('qna/show', {post:post});
     });
 });
 
@@ -117,7 +118,7 @@ router.put('/:id', util.isLoggedin, checkPermission, upload.single('newAttachmen
 router.delete('/:id', util.isLoggedin, checkPermission, function(req, res){
   Post.deleteOne({_id:req.params.id}, function(err){
     if(err) return res.json(err);
-    res.redirect('/posts'+res.locals.getPostQueryString());
+    res.redirect('/qna'+res.locals.getPostQueryString());
   });
 });
 
