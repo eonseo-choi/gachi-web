@@ -6,7 +6,19 @@
   <body>
     <%- include('../partials/nav') %>
 
-    <div class="container mb-3">
+    <video class="videobcg"
+      preload="auto"
+      autoplay="true"
+      loop="loop"
+      muted="muted">
+      <source src ="/public/images/Network.mp4" type="video/mp4">
+        해당 브라우저에서는 영상 재생이 불가합니다.
+      </source>
+    </video>
+
+    <!-- <img class="images" src="/public/images/bono.jpg"> -->
+
+    <div class="container mb-3 mt-5" style="width: 100%; height: 100%; background-color: rgb(219, 219, 219);">
 
       <h2 class="mb-3">게시판</h2>
 
@@ -32,8 +44,9 @@
             <tr>
               <td class="numId"><%= post.numId %></td>
               <td>
+                <!-- style로 색상 주기 -->
                 <a href="/posts/<%= post._id %><%= getPostQueryString() %>" class="title-container">
-                  <div data-search-highlight="title" class="title-ellipsis ellipsis float-left">
+                  <div data-search-highlight="title" class="title-ellipsis ellipsis float-left" style="color: rgb(0, 0, 0);">
                     <span class="title-text"><%= post.title %></span>
                     <% if(post.attachment){ %>
                       <small class="title-attachment d-inline-block pl-2">📁</small>
@@ -44,7 +57,7 @@
               <td class="views"><%= post.views %></td>
               <td class="author">
                 <a href="/posts<%= getPostQueryString(false, { searchType:'author!', searchText:post.author.username }) %>">
-                  <div data-search-highlight="author" class="ellipsis"><%= post.author ? post.author.username : "" %></div>
+                  <div data-search-highlight="author" class="ellipsis" style="color: rgb(0, 0, 0);"><%= post.author ? post.author.username : "" %></div>
                 </a>
               </td>
               <td class="date">
@@ -57,7 +70,8 @@
       <div class="row mb-3">
         <div class="col-2">
           <% if(isAuthenticated){ %>
-            <a class="btn btn-primary" href="/posts/new<%= getPostQueryString() %>">새 글</a>
+            <!-- btn-dark , primary는 color  -->
+            <a class="btn btn-dark" href="/posts/new<%= getPostQueryString() %>">새 글</a>
           <% } %>
         </div>
         <nav class="col-8">
@@ -72,7 +86,7 @@
             </li>
             <% for(i=1;i<=maxPage;i++){ %>
               <% if(i==1 || i==maxPage || (i>=currentPage-offset && i<=currentPage+offset)){ %>
-                <li class="page-item <%= currentPage==i?'active':'' %>"><a class="page-link" href="/posts<%= getPostQueryString(false, {page:i}) %>"> <%= i %> </a></li>
+                <li class="page-item <%= currentPage==i?'active':'' %>"><a class="page-link" style="color:rgb(0, 0, 0); background-color: rgb(255, 255, 255);"href="/posts<%= getPostQueryString(false, {page:i}) %>"> <%= i %> </a></li>
               <% } else if(i==2 || i==maxPage-1){ %>
                 <li><a class="page-link">...</a></li>
               <% } %>
@@ -104,7 +118,7 @@
               </select>
               <input minLength="3" type="text" name="searchText" value="<%= searchText %>">
               <div class="input-group-append">
-                <button class="btn btn-outline-primary" type="submit">검색</button>
+                <button class="btn btn-outline-dark" type="submit">검색</button>
               </div>
             </div>
           </div>
