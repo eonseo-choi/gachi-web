@@ -14,7 +14,9 @@
 
         <thead class="thead-light">
           <tr>
+            <th scope="col" class="numId">#</th> <!-- 1 -->
             <th scope="col">제목</th>
+            <th scope="col" class="views">조회수</th>  <!-- 2 -->
             <th scope="col" class="author">작성자</th>
             <th scope="col" class="date">날짜</th>
           </tr>
@@ -23,16 +25,23 @@
         <tbody>
           <% if(posts == null || posts.length == 0){ %>
             <tr>
-              <td colspan=2> 현재 게시글이 없습니다. ( </td>
+              <td colspan=5> 현재 게시글이 없습니다. ( </td>
             </tr>
           <% } %>
           <% posts.forEach(function(post) { %>
             <tr>
+              <td class="numId"><%= post.numId %></td>
               <td>
-                <a href="/posts/<%= post._id %><%= getPostQueryString() %>">
-                  <div data-search-highlight="title" class="ellipsis"><%= post.title %></div>
+                <a href="/posts/<%= post._id %><%= getPostQueryString() %>" class="title-container">
+                  <div data-search-highlight="title" class="title-ellipsis ellipsis float-left">
+                    <span class="title-text"><%= post.title %></span>
+                    <% if(post.attachment){ %>
+                      <small class="title-attachment d-inline-block pl-2">📁</small>
+                    <% } %>
+                  </div>
                 </a>
               </td>
+              <td class="views"><%= post.views %></td>
               <td class="author">
                 <a href="/posts<%= getPostQueryString(false, { searchType:'author!', searchText:post.author.username }) %>">
                   <div data-search-highlight="author" class="ellipsis"><%= post.author ? post.author.username : "" %></div>

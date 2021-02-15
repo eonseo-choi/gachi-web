@@ -22,12 +22,46 @@ router.get('/', async function(req, res){
   if(searchQuery) {
     var count = await Post.countDocuments(searchQuery);
     maxPage = Math.ceil(count/limit);
-    posts = await Post.find(searchQuery)
-      .populate('author')
-      .sort('-createdAt')
-      .skip(skip)
-      .limit(limit)
-      .exec();
+    posts = await Post.aggregate([
+      { $match: searchQuery },
+      { $lookup: {
+          from: 'users',
+          localField: 'author',
+          foreignField: '_id',
+          as: 'author'
+      } },
+      { $unwind: '$author' },
+      { $sort : { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      { $lookup: {
+          from: 'comments',
+          localField: '_id',
+          foreignField: 'post',
+          as: 'comments'
+      } },
+      { $lookup: {
+          from: 'files',
+          localField: 'attachment',
+          foreignField: '_id',
+          as: 'attachment'
+      } },
+      { $unwind: {
+        path: '$attachment',
+        preserveNullAndEmptyArrays: true
+      } },
+      { $project: {
+          title: 1,
+          author: {
+            username: 1,
+          },
+          views: 1,
+          numId: 1,
+          attachment: { $cond: [{$and: ['$attachment', {$not: '$attachment.isDeleted'}]}, true, false] },
+          createdAt: 1,
+          commentCount: { $size: '$comments'}
+      } },
+    ]).exec();
   }
 
   res.render('posts/index', {
@@ -39,6 +73,7 @@ router.get('/', async function(req, res){
     searchText:req.query.searchText
   });
 });
+
 
 // New
 router.get('/new', util.isLoggedin, function(req, res){
@@ -68,12 +103,17 @@ router.post('/', util.isLoggedin, upload.single('attachment'), async function(re
 
 // show
 router.get('/:id', function(req, res){
-  Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}})
-    .populate('author')
-    .exec(function(err, post){
-      if(err) return res.json(err);
-      res.render('posts/show', {post:post});
-    });
+  Promise.all([
+    Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' }).populate({path:'attachment',match:{isDeleted:false}})
+  ])
+  .then(([post]) => {
+    post.views++;
+    post.save();
+    res.render('posts/show', { post:post});
+  })
+  .catch((err) => {
+    return res.json(err);
+  });
 });
 
 
