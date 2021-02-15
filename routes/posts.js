@@ -1,10 +1,10 @@
 var express  = require('express');
 var router = express.Router();
-var multer = require('multer'); 
-var upload = multer({ dest: 'uploadedFiles/' }); 
+var multer = require('multer'); // 1
+var upload = multer({ dest: 'uploadedFiles/' });
 var Post = require('../models/Post');
 var User = require('../models/User');
-var File = require('../models/File'); 
+var File = require('../models/File'); // 3
 var util = require('../util');
 
 // Index
@@ -22,46 +22,12 @@ router.get('/', async function(req, res){
   if(searchQuery) {
     var count = await Post.countDocuments(searchQuery);
     maxPage = Math.ceil(count/limit);
-    posts = await Post.aggregate([
-      { $match: searchQuery },
-      { $lookup: {
-          from: 'users',
-          localField: 'author',
-          foreignField: '_id',
-          as: 'author'
-      } },
-      { $unwind: '$author' },
-      { $sort : { createdAt: -1 } },
-      { $skip: skip },
-      { $limit: limit },
-      { $lookup: {
-          from: 'comments',
-          localField: '_id',
-          foreignField: 'post',
-          as: 'comments'
-      } },
-      { $lookup: {
-          from: 'files',
-          localField: 'attachment',
-          foreignField: '_id',
-          as: 'attachment'
-      } },
-      { $unwind: {
-        path: '$attachment',
-        preserveNullAndEmptyArrays: true
-      } },
-      { $project: {
-          title: 1,
-          author: {
-            username: 1,
-          },
-          views: 1,
-          numId: 1,
-          attachment: { $cond: [{$and: ['$attachment', {$not: '$attachment.isDeleted'}]}, true, false] },
-          createdAt: 1,
-          commentCount: { $size: '$comments'}
-      } },
-    ]).exec();
+    posts = await Post.find(searchQuery)
+      .populate('author')
+      .sort('-createdAt')
+      .skip(skip)
+      .limit(limit)
+      .exec();
   }
 
   res.render('posts/index', {
@@ -82,8 +48,8 @@ router.get('/new', util.isLoggedin, function(req, res){
 });
 
 // create
-router.post('/', util.isLoggedin, upload.single('attachment'), async function(req, res){ //
-  var attachment = req.file?await File.createNewInstance(req.file, req.user._id):undefined; //
+router.post('/', util.isLoggedin, upload.single('attachment'), async function(req, res){
+  var attachment = req.file?await File.createNewInstance(req.file, req.user._id):undefined;
   req.body.attachment = attachment;
   req.body.author = req.user._id;
   Post.create(req.body, function(err, post){
@@ -92,9 +58,9 @@ router.post('/', util.isLoggedin, upload.single('attachment'), async function(re
       req.flash('errors', util.parseError(err));
       return res.redirect('/posts/new'+res.locals.getPostQueryString());
     }
-    if(attachment){
-      attachment.postId = post._id; 
-      attachment.save();
+    if(attachment){                 // 4-4
+      attachment.postId = post._id; // 4-4
+      attachment.save();            // 4-4
     }      
     res.redirect('/posts'+res.locals.getPostQueryString(false, { page:1, searchText:'' }));
   });
@@ -102,30 +68,26 @@ router.post('/', util.isLoggedin, upload.single('attachment'), async function(re
 
 // show
 router.get('/:id', function(req, res){
-  Promise.all([
-    Post.findOne({_id:req.params.id}).populate({ path: 'author', select: 'username' })
-  ])
-  .then(([post]) => {
-    post.views++;
-    post.save();
-    res.render('posts/show', { post:post});
-  })
-  .catch((err) => {
-    return res.json(err);
-  });
+  Post.findOne({_id:req.params.id}).populate({path:'attachment',match:{isDeleted:false}})
+    .populate('author')
+    .exec(function(err, post){
+      if(err) return res.json(err);
+      res.render('posts/show', {post:post});
+    });
 });
+
 
 // edit
 router.get('/:id/edit', util.isLoggedin, checkPermission, function(req, res){
   var post = req.flash('post')[0];
   var errors = req.flash('errors')[0] || {};
   if(!post){
-    Post.findOne({_id:req.params.id})                           //
-    .populate({path:'attachment',match:{isDeleted:false}})    //
-    .exec(function(err, post){                                //
-      if(err) return res.json(err);
-      res.render('posts/edit', { post:post, errors:errors });
-    });
+    Post.findOne({_id:req.params.id})
+      .populate({path:'attachment',match:{isDeleted:false}})
+      .exec(function(err, post){
+        if(err) return res.json(err);
+        res.render('posts/edit', { post:post, errors:errors });
+      });
   }
   else {
     post._id = req.params.id;
@@ -171,22 +133,22 @@ function checkPermission(req, res, next){
   });
 }
 
-async function createSearchQuery(queries){    //createSearchQuery함수 안에서 user모델을 검색하기 때문에 async 함수가 되었습니다.
-  var searchQuery = {};   
+async function createSearchQuery(queries){
+  var searchQuery = {};
   if(queries.searchType && queries.searchText && queries.searchText.length >= 3){
     var searchTypes = queries.searchType.toLowerCase().split(',');
     var postQueries = [];
     if(searchTypes.indexOf('title')>=0){
       postQueries.push({ title: { $regex: new RegExp(queries.searchText, 'i') } });
     }
-    if(searchTypes.indexOf('body')>=0){   
+    if(searchTypes.indexOf('body')>=0){
       postQueries.push({ body: { $regex: new RegExp(queries.searchText, 'i') } });
     }
-    if(searchTypes.indexOf('author!')>=0){  //작성자 ID text가 일치하는 한명을 검색
+    if(searchTypes.indexOf('author!')>=0){
       var user = await User.findOne({ username: queries.searchText }).exec();
       if(user) postQueries.push({author:user._id});
     }
-    else if(searchTypes.indexOf('author')>=0){    //regex를 사용해 사용자 ID의 일부분이 포함되면 검색
+    else if(searchTypes.indexOf('author')>=0){
       var users = await User.find({ username: { $regex: new RegExp(queries.searchText, 'i') } }).exec();
       var userIds = [];
       for(var user of users){

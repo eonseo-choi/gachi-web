@@ -61,10 +61,9 @@ app.use(function (req, res, next) {
 app.use('/', require('./routes/home'));
 app.use('/posts', util.getPostQueryString, require('./routes/posts'));
 app.use('/qna', util.getPostQueryString, require('./routes/postsqna'));
-app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 app.use('/users', require('./routes/users'));
 app.use('/files', require('./routes/files')); // 1
-
+app.use('/comments', util.getPostQueryString, require('./routes/comments'));
 
 // Port setting
 // var port = 8000;
